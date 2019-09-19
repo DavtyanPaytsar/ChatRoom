@@ -1,0 +1,131 @@
+﻿@page
+
+@{
+    ViewData[ "Title" ] = "Home page";
+}
+@using Microsoft.AspNetCore.Identity
+@using ChatRoom.DAL.Models.Auth
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<style>
+    .eighty {
+        height: 78vh;
+        display: block;
+        overflow-y: auto;
+    }
+
+    .five {
+        height: 5vh;
+        border: 1px;
+        display: block;
+    }
+
+    .room {
+        padding: 10px;
+        border-radius: 12px;
+        background-color: darkgrey;
+        text-align: center;
+        color: black;
+        cursor: pointer;
+    }
+
+    .roomDelete {
+        padding-top: 13px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .selectedRoom {
+        border-style: inset;
+        cursor: default;
+    }
+
+    .chat_my_message {
+        padding: 10px;
+        border-radius: 12px;
+        width: 70%;
+        background-color: beige;
+        margin: 6px 4px;
+    }
+
+    .chat_others_message {
+        padding: 10px;
+        border-radius: 12px;
+        width: 70%;
+        background-color: aliceblue;
+        margin: 6px 4px;
+    }
+
+    .backColor {
+        background-color: darkgrey;
+    }
+
+    .wrapContainer {
+        word-wrap: break-word;
+    }
+</style>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-sm-3 backColor">
+                <div class="eighty panel panel-default">
+                    <div class="panel-body">
+                        <div class="text-center"> Rooms </div>
+                        <input type="hidden" id="currentRoom" value="">
+                        <input type="hidden" value=@(User.Identity.Name)  id="currentUser">
+      <div clsss="row" id="rooms">
+
+      </div>
+
+  </div>
+
+</div>
+
+<div class="five">
+                    <button type="submit" class="btn btn-default center-block" data-toggle="modal" data-target="#myModal">Add new room</button>
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">New room</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="text" maxlength="15" class="form-control" id="roomName" placeholder="Room Name">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="CreateNewRoomButton">Add</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 backColor">
+                <div class="eighty panel panel-default">
+                    <div id="msgs" class="panel-body"></div>
+                </div>
+                <div class="five">
+                    <input class="form-control" maxlength="500" id="messageContent" placeholder="Type the message here and press enter" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <hr />
+    <p>To use this application please log in to your account or register the new one.</p>
+}
